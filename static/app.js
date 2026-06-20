@@ -163,6 +163,7 @@ let currentWord = '';
 let currentLetterIdx = 0;
 let spawnTimer = null;
 let gameActive = false;
+let difficulty = 'easy'; // 'easy', 'moderate', 'hard'
 
 // HTML Elements
 const scoreValEl = document.getElementById('stat-score');
@@ -176,6 +177,7 @@ const gameOverOverlay = document.getElementById('game-over-overlay');
 const finalScoreValEl = document.getElementById('final-score-val');
 const soundBtn = document.getElementById('btn-sound');
 const soundIcon = document.getElementById('sound-icon');
+const difficultySelectorContainer = document.getElementById('difficulty-selector-container');
 
 // Lists of kid-friendly words
 const wordLibrary = [
@@ -354,6 +356,7 @@ class FloatingLetter {
         this.radius = 52;
         this.alpha = 1.0;
         this.isZapped = false;
+        this.hasTriggeredSpawn = false;
     }
 
     update() {
@@ -610,6 +613,11 @@ function gameLoop() {
         }
     }
 
+    // Spawning check for falling letters mode
+    if (mode === 'falling' && gameActive) {
+        checkAndSpawnFallingLetters();
+    }
+
     // 5. Update & Draw Rocket (Word Mode only)
     if (mode === 'word') {
         rocket.update();
@@ -697,11 +705,13 @@ function changeMode(newMode) {
         shieldsBox.style.display = 'none';
         wordDisplayContainer.style.display = 'none';
         tutorialBanner.style.display = 'block';
+        difficultySelectorContainer.style.display = 'none';
         gameActive = true; // Sandbox is always active
     } else if (mode === 'falling') {
         shieldsBox.style.display = 'flex';
         wordDisplayContainer.style.display = 'none';
         tutorialBanner.style.display = 'none';
+        difficultySelectorContainer.style.display = 'block';
         
         // Show start screen overlay
         document.getElementById('overlay-title').textContent = "Asteroid Storm! ☄️";
@@ -712,6 +722,7 @@ function changeMode(newMode) {
         shieldsBox.style.display = 'none';
         wordDisplayContainer.style.display = 'block';
         tutorialBanner.style.display = 'none';
+        difficultySelectorContainer.style.display = 'none';
         
         // Show start screen overlay
         document.getElementById('overlay-title').textContent = "Word Launch Mission! 🪐";
@@ -723,30 +734,80 @@ function changeMode(newMode) {
 
 // --- Spawning Logic (Falling Letters Mode) ---
 function startSpawning() {
-    stopSpawning();
-    
-    // Spawn rate speeds up as score increases
-    const spawnRate = Math.max(1200, 2400 - (score * 50)); 
-    
-    spawnTimer = setTimeout(function spawnNext() {
-        if (!gameActive || mode !== 'falling') return;
-        
-        // Choose a random letter A-Z or number 0-9
-        const pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const char = pool.charAt(Math.floor(Math.random() * pool.length));
-        
-        floatingLetters.push(new FloatingLetter(char, null, true));
-        
-        // Schedule next spawn
-        const nextRate = Math.max(1000, 2400 - (score * 60));
-        spawnTimer = setTimeout(spawnNext, nextRate);
-    }, 1000);
+    // Legacy support: now we spawn the first wave in startGame()
+    spawnFallingLetterWave();
 }
 
 function stopSpawning() {
-    if (spawnTimer) {
-        clearTimeout(spawnTimer);
-        spawnTimer = null;
+    // No-op: handled by game state and position checks
+}
+
+function getActiveFallingLetters() {
+    return floatingLetters.filter(l => l.fromTop && !l.isZapped);
+}
+
+function spawnFallingLetterWave() {
+    const pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+    if (difficulty === 'hard') {
+        // Spawn two letters
+        const char1 = pool.charAt(Math.floor(Math.random() * pool.length));
+        let char2 = pool.charAt(Math.floor(Math.random() * pool.length));
+        while (char2 === char1) {
+            char2 = pool.charAt(Math.floor(Math.random() * pool.length));
+        }
+        
+        // Horizontal positions spaced out
+        const x1 = 80 + Math.random() * (width / 2 - 120);
+        const x2 = width / 2 + 40 + Math.random() * (width / 2 - 120);
+        
+        const l1 = new FloatingLetter(char1, x1, true);
+        const l2 = new FloatingLetter(char2, x2, true);
+        
+        l1.hasTriggeredSpawn = false;
+        l2.hasTriggeredSpawn = false;
+        
+        floatingLetters.push(l1, l2);
+    } else {
+        // Spawn one letter
+        const char = pool.charAt(Math.floor(Math.random() * pool.length));
+        const l = new FloatingLetter(char, null, true);
+        l.hasTriggeredSpawn = false;
+        floatingLetters.push(l);
+    }
+}
+
+function checkAndSpawnFallingLetters() {
+    const active = getActiveFallingLetters();
+    
+    if (active.length === 0) {
+        spawnFallingLetterWave();
+        return;
+    }
+    
+    // Find the oldest letter (largest y coordinate)
+    let oldest = active[0];
+    for (let i = 1; i < active.length; i++) {
+        if (active[i].y > oldest.y) {
+            oldest = active[i];
+        }
+    }
+    
+    // Check if the oldest letter has not triggered a spawn yet, and has crossed the threshold
+    if (!oldest.hasTriggeredSpawn) {
+        let threshold = height * 0.8; // Easy: bottom 1/5th (crosses 4/5ths height)
+        if (difficulty === 'moderate') {
+            threshold = height * (2 / 3); // Moderate: bottom 1/3rd (crosses 2/3rds height)
+        } else if (difficulty === 'hard') {
+            threshold = height * 0.5; // Hard: bottom 1/2 (crosses 1/2 height)
+        }
+        
+        if (oldest.y >= threshold) {
+            // Mark all current active letters as having triggered the spawn
+            active.forEach(l => l.hasTriggeredSpawn = true);
+            
+            spawnFallingLetterWave();
+        }
     }
 }
 
@@ -927,6 +988,16 @@ function setActiveModeButton(btn) {
 // Audio Toggle Button
 soundBtn.addEventListener('click', () => {
     audio.toggleMute(soundBtn, soundIcon);
+});
+
+// Difficulty Buttons selector
+const diffButtons = document.querySelectorAll('.diff-btn');
+diffButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        diffButtons.forEach(b => b.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        difficulty = e.currentTarget.dataset.diff;
+    });
 });
 
 // Action buttons (Start / Play Again)

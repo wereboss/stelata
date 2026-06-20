@@ -64,6 +64,17 @@
                 <div id="start-overlay" class="overlay-card" style="display: none;">
                     <h2 id="overlay-title">Prepare for Launch!</h2>
                     <p id="overlay-desc">Press any key or click below to start.</p>
+                    
+                    <!-- Difficulty Selector for Falling Letters -->
+                    <div id="difficulty-selector-container" style="display: none;">
+                        <label class="difficulty-label">Choose Mission Difficulty:</label>
+                        <div class="difficulty-buttons">
+                            <button type="button" class="diff-btn active" id="diff-easy" data-diff="easy">Easy 🟢</button>
+                            <button type="button" class="diff-btn" id="diff-moderate" data-diff="moderate">Moderate 🟡</button>
+                            <button type="button" class="diff-btn" id="diff-hard" data-diff="hard">Hard 🔴</button>
+                        </div>
+                    </div>
+
                     <button class="action-btn" id="btn-start-game">START MISSION</button>
                 </div>
 
