@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Cadet Keyboard Explorer 🚀</title>
+    <!-- Playful, rounded Google Font perfect for kids -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Background Twinkling Stars Canvas -->
+        <canvas id="starfield-canvas"></canvas>
+
+        <!-- Top Navigation / Stats Dashboard -->
+        <header class="game-header">
+            <div class="logo">
+                <span class="logo-emoji">🚀</span>
+                <span class="logo-text">Space Cadet <span class="highlight">Keyboard</span></span>
+            </div>
+
+            <!-- Game Mode Selector -->
+            <div class="modes-container">
+                <button class="mode-btn active" id="btn-free" data-mode="free">
+                    <span class="btn-icon">🎈</span> Free Play
+                </button>
+                <button class="mode-btn" id="btn-falling" data-mode="falling">
+                    <span class="btn-icon">⭐</span> Falling Letters
+                </button>
+                <button class="mode-btn" id="btn-word" data-mode="word">
+                    <span class="btn-icon">🪐</span> Word Launch
+                </button>
+            </div>
+
+            <!-- Sound & Stats Panel -->
+            <div class="controls-panel">
+                <button id="btn-sound" class="sound-btn muted" title="Toggle Sound">
+                    <span id="sound-icon">🔈</span> Sound On
+                </button>
+                <div class="stats-hub">
+                    <div class="stat-box">
+                        <span class="stat-label">Stars</span>
+                        <span class="stat-value" id="stat-score">0</span>
+                    </div>
+                    <div class="stat-box" id="stat-shield-box" style="display: none;">
+                        <span class="stat-label">Shields</span>
+                        <span class="stat-value" id="stat-shields">🚀🚀🚀</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Interactive Area -->
+        <main class="game-container">
+            <!-- HTML Canvas for the active interactive elements (letters, rockets, particles) -->
+            <canvas id="game-canvas"></canvas>
+
+            <!-- Instructions Overlay (disappears or shifts based on mode) -->
+            <div class="overlay-container" id="game-overlay">
+                <!-- Start Game Overlay for Falling Letters / Word Launch -->
+                <div id="start-overlay" class="overlay-card" style="display: none;">
+                    <h2 id="overlay-title">Prepare for Launch!</h2>
+                    <p id="overlay-desc">Press any key or click below to start.</p>
+                    <button class="action-btn" id="btn-start-game">START MISSION</button>
+                </div>
+
+                <!-- Game Over Overlay -->
+                <div id="game-over-overlay" class="overlay-card" style="display: none;">
+                    <h2 class="danger-text">Shields Down! 💥</h2>
+                    <p>You did an amazing job, Cadet!</p>
+                    <div class="final-score-box">
+                        <span>Stars Collected:</span>
+                        <span class="final-score" id="final-score-val">0</span>
+                    </div>
+                    <button class="action-btn" id="btn-restart-game">PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <!-- On-Screen Word Display (for Word Launch Mode) -->
+            <div id="word-display-container" style="display: none;">
+                <div class="word-card">
+                    <div id="word-letters"></div>
+                    <div class="word-hint">Type the glowing letter!</div>
+                </div>
+            </div>
+            
+            <!-- Quick Tutorial Banner for Free Play -->
+            <div id="tutorial-banner" class="tutorial-banner">
+                <p>👇 Type any letter or number on your keyboard to watch it fly! 👇</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="game-footer">
+            <p>Made with ❤️ for future space explorers.</p>
+        </div>
+    </div>
+
+    <!-- Main Game JavaScript -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
