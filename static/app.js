@@ -158,7 +158,7 @@ const audio = new SpaceAudioSynth();
 // --- Game Engine Variables ---
 let mode = 'free'; // 'free', 'falling', 'word'
 let score = 0;
-let shields = 3;
+let shields = 5;
 let currentWord = '';
 let currentLetterIdx = 0;
 let spawnTimer = null;
@@ -667,8 +667,8 @@ function endGame() {
 
 function startGame() {
     setScore(0);
-    shields = 3;
-    shieldsValEl.textContent = '🚀🚀🚀';
+    shields = 5;
+    shieldsValEl.textContent = '🚀🚀🚀🚀🚀';
     
     floatingLetters = [];
     particles = [];
@@ -712,10 +712,11 @@ function changeMode(newMode) {
         wordDisplayContainer.style.display = 'none';
         tutorialBanner.style.display = 'none';
         difficultySelectorContainer.style.display = 'block';
+        document.getElementById('btn-start-game').style.display = 'none'; // Hide Start Mission button, since clicking a difficulty starts the game
         
         // Show start screen overlay
         document.getElementById('overlay-title').textContent = "Asteroid Storm! ☄️";
-        document.getElementById('overlay-desc').textContent = "Type the letters inside the bubbles before they hit the ground. Save our shields!";
+        document.getElementById('overlay-desc').textContent = "Select a difficulty below to launch the mission. Save our shields!";
         startOverlay.style.display = 'block';
         document.getElementById('game-overlay').style.pointerEvents = 'auto';
     } else if (mode === 'word') {
@@ -723,6 +724,7 @@ function changeMode(newMode) {
         wordDisplayContainer.style.display = 'block';
         tutorialBanner.style.display = 'none';
         difficultySelectorContainer.style.display = 'none';
+        document.getElementById('btn-start-game').style.display = 'inline-block'; // Show for Word mode
         
         // Show start screen overlay
         document.getElementById('overlay-title').textContent = "Word Launch Mission! 🪐";
@@ -990,14 +992,13 @@ soundBtn.addEventListener('click', () => {
     audio.toggleMute(soundBtn, soundIcon);
 });
 
-// Difficulty Buttons selector
-const diffButtons = document.querySelectorAll('.diff-btn');
-diffButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        diffButtons.forEach(b => b.classList.remove('active'));
-        e.currentTarget.classList.add('active');
-        difficulty = e.currentTarget.dataset.diff;
-    });
+// Difficulty Selection Event Delegation (supports both cards and legacy buttons to bypass browser cache mismatches)
+document.addEventListener('click', (e) => {
+    const card = e.target.closest('.diff-card, .diff-btn');
+    if (card) {
+        difficulty = card.dataset.diff;
+        startGame();
+    }
 });
 
 // Action buttons (Start / Play Again)

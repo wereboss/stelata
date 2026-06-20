@@ -11,8 +11,8 @@ The application is powered by a **FastAPI** backend that hosts a responsive, can
 1. **🎈 Free Play:** 
    Perfect for beginners! Type any letter or number on the keyboard to watch it materialize and fly across the starfield with colorful particle effects.
    
-2. **⭐ Falling Letters:** 
-   A defense mission! Letters fall from space towards your ship. Type the correct letters to zap them before they hit your shields. Keep your shields up to survive!
+2. **⭐ Falling Letters (Asteroid Storm):** 
+   A defense mission! Letters fall from space towards your ship. Choose from three difficulty levels (**Recruit**, **Pilot**, and **Commander**) styled as floating bubble buttons. Clicking a difficulty level immediately launches the mission, spawning letters at different speeds and frequencies depending on your chosen rank!
 
 3. **🪐 Word Launch:** 
    Type entire words letter-by-letter to fuel and launch space rockets into orbit. Great for practicing vocabulary and speed.
@@ -24,6 +24,7 @@ The application is powered by a **FastAPI** backend that hosts a responsive, can
 - **Dynamic Starfield Background:** A live canvas-based animation of moving and twinkling stars.
 - **Sound Effects:** Toggleable audio guidance and feedback (can be muted).
 - **Mission Stats:** Real-time tracking of **Stars Collected** (score) and **Shields** (health).
+- **Interactive Difficulty Selector:** Custom-designed buttons matching the font (Fredoka), size (56px), semi-transparent background, and neon glowing borders of the game's actual floating letter bubbles.
 - **Responsive Web UI:** Built with custom typography (Fredoka font) and glassmorphic designs.
 - **Python Backend:** Fast and lightweight serving via FastAPI and Uvicorn.
 

@@ -455,66 +455,98 @@ body, html {
 
 /* Difficulty Selector */
 #difficulty-selector-container {
-    margin: 1.5rem 0;
+    margin: 2rem 0;
 }
 
 .difficulty-label {
     display: block;
-    margin-bottom: 0.75rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.25rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
 }
 
-.difficulty-buttons {
+.difficulty-container {
     display: flex;
-    gap: 12px;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 2rem auto;
+    width: max-content;
+    max-width: 100%;
 }
 
 .diff-btn {
-    font-family: var(--font-primary);
-    font-size: 1rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    padding: 0.6rem 1.4rem;
-    border-radius: 50px;
+    font-family: 'Fredoka', var(--font-primary);
+    font-size: 56px; /* Matching the letter bubble font size */
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(15, 12, 36, 0.45); /* Matching bubble background */
+    border: 3px solid var(--glass-border);
+    padding: 0.75rem 2rem;
+    border-radius: 60px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     outline: none;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-.diff-btn:hover {
-    color: var(--text-light);
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
+.diff-btn .btn-icon {
+    font-size: 48px;
+    display: inline-block;
+    transition: transform 0.2s ease;
 }
 
-.diff-btn.active[data-diff="easy"] {
-    background: rgba(57, 255, 20, 0.15);
+/* Easy (Green Bubble) */
+.diff-btn[data-diff="easy"] {
+    border-color: rgba(57, 255, 20, 0.25);
+}
+.diff-btn[data-diff="easy"]:hover,
+.diff-btn[data-diff="easy"]:active {
+    color: #ffffff;
     border-color: var(--neon-green);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
-    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(57, 255, 20, 0.5);
+    text-shadow: 0 0 15px rgba(57, 255, 20, 0.85);
+    transform: scale(1.08);
+}
+.diff-btn[data-diff="easy"]:hover .btn-icon {
+    transform: scale(1.15) rotate(-10deg);
 }
 
-.diff-btn.active[data-diff="moderate"] {
-    background: rgba(255, 240, 31, 0.15);
+/* Moderate (Yellow Bubble) */
+.diff-btn[data-diff="moderate"] {
+    border-color: rgba(255, 240, 31, 0.25);
+}
+.diff-btn[data-diff="moderate"]:hover,
+.diff-btn[data-diff="moderate"]:active {
+    color: #ffffff;
     border-color: var(--neon-yellow);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 240, 31, 0.3);
-    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 240, 31, 0.5);
+    text-shadow: 0 0 15px rgba(255, 240, 31, 0.85);
+    transform: scale(1.08);
+}
+.diff-btn[data-diff="moderate"]:hover .btn-icon {
+    transform: scale(1.15) translateY(-3px);
 }
 
-.diff-btn.active[data-diff="hard"] {
-    background: rgba(255, 0, 127, 0.15);
+/* Hard (Pink Bubble) */
+.diff-btn[data-diff="hard"] {
+    border-color: rgba(255, 0, 127, 0.25);
+}
+.diff-btn[data-diff="hard"]:hover,
+.diff-btn[data-diff="hard"]:active {
+    color: #ffffff;
     border-color: var(--neon-pink);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
-    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
+    text-shadow: 0 0 15px rgba(255, 0, 127, 0.85);
+    transform: scale(1.08);
+}
+.diff-btn[data-diff="hard"]:hover .btn-icon {
+    transform: scale(1.15) rotate(15deg);
 }
 
 /* Responsive Scaling */
@@ -536,5 +568,26 @@ body, html {
     
     .overlay-card {
         padding: 2rem 1.5rem;
+    }
+
+    .difficulty-container {
+        flex-direction: column;
+        border-radius: 24px;
+        width: 100%;
+        padding: 0.5rem;
+        gap: 1rem;
+        margin: 1.5rem auto;
+    }
+
+    .diff-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.6rem 1.5rem;
+        font-size: 32px; /* Scale down for mobile devices */
+        border-radius: 40px;
+    }
+    
+    .diff-btn .btn-icon {
+        font-size: 28px;
     }
 }

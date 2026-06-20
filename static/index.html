@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css?v=1.6">
 </head>
 <body>
     <div id="app">
@@ -47,7 +47,7 @@
                     </div>
                     <div class="stat-box" id="stat-shield-box" style="display: none;">
                         <span class="stat-label">Shields</span>
-                        <span class="stat-value" id="stat-shields">🚀🚀🚀</span>
+                        <span class="stat-value" id="stat-shields">🚀🚀🚀🚀🚀</span>
                     </div>
                 </div>
             </div>
@@ -68,10 +68,16 @@
                     <!-- Difficulty Selector for Falling Letters -->
                     <div id="difficulty-selector-container" style="display: none;">
                         <label class="difficulty-label">Choose Mission Difficulty:</label>
-                        <div class="difficulty-buttons">
-                            <button type="button" class="diff-btn active" id="diff-easy" data-diff="easy">Easy 🟢</button>
-                            <button type="button" class="diff-btn" id="diff-moderate" data-diff="moderate">Moderate 🟡</button>
-                            <button type="button" class="diff-btn" id="diff-hard" data-diff="hard">Hard 🔴</button>
+                        <div class="difficulty-container">
+                            <button type="button" class="diff-btn" id="diff-easy" data-diff="easy">
+                                <span class="btn-icon">🟢</span> Easy
+                            </button>
+                            <button type="button" class="diff-btn" id="diff-moderate" data-diff="moderate">
+                                <span class="btn-icon">🟡</span> Moderate
+                            </button>
+                            <button type="button" class="diff-btn" id="diff-hard" data-diff="hard">
+                                <span class="btn-icon">🔴</span> Hard
+                            </button>
                         </div>
                     </div>
 
@@ -111,6 +117,6 @@
     </div>
 
     <!-- Main Game JavaScript -->
-    <script src="/static/app.js"></script>
+    <script src="/static/app.js?v=1.6"></script>
 </body>
 </html>
